@@ -1,0 +1,12 @@
+[package]
+name = "rust-efimer"
+version = "0.1.0"
+authors = ["Albert Franzi <franzicros@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+reqwest = "0.9.22"      # https://github.com/seanmonstar/reqwest
+scraper = "0.11.0"      # https://github.com/programble/scraper
+select = "0.4.3"        # https://github.com/utkarshkukreti/select.rs
