@@ -12,23 +12,28 @@ fn get_hrefs(doc: Document) -> Vec<Option<String>> {
         .collect::<Vec<_>>()
 }
 
-fn grab_issues(issues_url: &str) {
-    let resp = get_body(issues_url);
-    let document = resp.map(|body| Document::from(&*body));
-    let issues: Result<Vec<Option<String>>, Error> = document.map(|doc| get_hrefs(doc));
+fn process_doc(body: String) -> Vec<String> {
+    let document: Document = Document::from(&*body);
+    let issues: Vec<Option<String>> = get_hrefs(document);
 
-    issues.map(|x| {
-        println!("Length {}", x.len());
-
-        for issue in &x {
-            match issue {
-                Some(du) => println!("{}", du),
-                None => println!("Empty"),
-            }
+    let mut issues_refs: Vec<String> = Vec::new();
+    for issue in &issues {
+        match issue {
+            Some(du) => issues_refs.push(du.to_string()),
+            _ => println!("Empty"),
         }
-    });
+    }
+
+    issues_refs
+}
+
+fn grab_issues(issues_url: &str) -> Vec<String> {
+    let resp = get_body(issues_url);
+    resp.map(|body| process_doc(body)).unwrap()
 }
 
 fn main() {
-    grab_issues("http://weekly.sfdata.io/")
+    for i in grab_issues("http://weekly.sfdata.io/") {
+        println!("Issue link: {}", i);
+    }
 }
