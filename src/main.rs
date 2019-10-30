@@ -16,15 +16,10 @@ fn process_doc(body: String) -> Vec<String> {
     let document: Document = Document::from(&*body);
     let issues: Vec<Option<String>> = get_hrefs(document);
 
-    let mut issues_refs: Vec<String> = Vec::new();
-    for issue in &issues {
-        match issue {
-            Some(du) => issues_refs.push(du.to_string()),
-            _ => println!("Empty"),
-        }
-    }
-
-    issues_refs
+    issues
+        .into_iter()
+        .filter_map(|x| x)
+        .collect()
 }
 
 fn grab_issues(issues_url: &str) -> Vec<String> {
